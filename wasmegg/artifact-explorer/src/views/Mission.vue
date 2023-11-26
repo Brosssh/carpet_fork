@@ -11,8 +11,7 @@
                 `Zero-g Quantum Containment: <span class='text-green-200'>${config.epicResearchZerogLevel}/10</span>`,
               allowHTML: true,
             }"
-            class="inline-flex items-center text-sm"
-          >
+            class="inline-flex items-center text-sm">
             ({{ selectedLevel }}<star-icon class="h-4 w-4 text-yellow-400" />,
             {{ mission.boostedCapacity(configWithSelectedLevel) }} capacity,
             {{ mission.boostedDurationDisplay(configWithSelectedLevel) }})
@@ -97,14 +96,12 @@
 
       <div class="flex rounded-md">
         <span
-          class="inline-flex items-center text-xs px-2 rounded-l-md border border-r-0 border-gray-300 bg-gray-100 text-gray-500"
-        >
+          class="inline-flex items-center text-xs px-2 rounded-l-md border border-r-0 border-gray-300 bg-gray-100 text-gray-500">
           Sort by
         </span>
         <select
           v-model="sortBy"
-          class="text-xs pr-8 py-1 rounded-none rounded-r-md text-gray-500 bg-white border-gray-300 focus:outline-none focus:ring-0 focus:ring-gray-300 focus:border-gray-300"
-        >
+          class="text-xs pr-8 py-1 rounded-none rounded-r-md text-gray-500 bg-white border-gray-300 focus:outline-none focus:ring-0 focus:ring-gray-300 focus:border-gray-300">
           <option :value="ItemsSortBy.Family">Family</option>
           <option :value="ItemsSortBy.Quality">Quality</option>
           <option :value="ItemsSortBy.DropRate">Drop rate</option>
@@ -140,7 +137,7 @@
         </li>
       </ul>
 
-      <template v-if="1==1">
+      <template v-if="!tooLittleDataForSelectedLevel"> 
         <hr />
 
         <p class="text-sm">
@@ -149,59 +146,48 @@
             v-tippy="{
               content: `<span class='text-blue-300'>Full consumption value</span> is the number of golden eggs / piggy fill obtained from recursively consuming all loot items, that is, for artifacts yielding stones and fragments, the resulting items are further broken down into GE/Piggy Fill. Uncommon items are demoted first before consumption.`,
               allowHTML: true,
-            }"
-            class="inline"
-          />
+            }" class="inline" />
           <br />
-         <span class="inline-flex items-center whitespace-nowrap"
-           >Obtained <img class="h-4 w-4 ml-px" :src="iconURL('egginc-extras/icon_golden_egg.png', 64)" /></span
-         >:
-          <span class="inline-flex items-center text-yellow-500 whitespace-nowrap"
-            >{{
-              formatToPrecision(selectedLevelExpectedFullConsumptionValuePerShip[0], precision[0])
-            }}/<img class="h-4 w-4 ml-px" :src="iconURL(mission.shipIconPath, 32)" /></span
-          >,
+          <!-- Raw GE per ship -->
+          <span class="inline-flex items-center text-yellow-500 whitespace-nowrap">
+            {{ formatToPrecision(selectedLevelExpectedFullConsumptionValuePerShip[0], precision[0]) }}
+            <img class="h-4 w-4 ml-px" :src="iconURL('egginc-extras/icon_golden_egg.png', 64)" />
+           /<img class="h-4 w-4 ml-px" :src="iconURL(mission.shipIconPath, 32)" />
+          </span>,
           <span class="whitespace-nowrap">
-              <span class="text-yellow-500">
-                  {{
+            <span class="text-yellow-500">
+              {{
                 formatToPrecision(selectedLevelExpectedFullConsumptionValuePerDay[0], precision[0])
-                  }}/d
-              </span>
-            (1 mission slot)</span
-          >,
+              }}/d
+            </span>
+            (1 mission slot)</span>,
           <span class="whitespace-nowrap">
-              <span class="text-yellow-500">
-                  {{
+            <span class="text-yellow-500">
+              {{
                 formatToPrecision(selectedLevelExpectedFullConsumptionValuePerDay[0] * 3, precision[0])
-                  }}/d
-              </span>
-            (3 mission slots)</span
-          >.
+              }}/d
+            </span>
+            (3 mission slots)</span>.
           <br />
-          <span class="inline-flex items-center whitespace-nowrap"
-              >Obtained <img class="h-4 w-4 ml-px" :src="iconURL('egginc-extras/icon_piggy_golden_egg.png', 64)" /></span
-            >:
-             <span class="inline-flex items-center text-yellow-500 whitespace-nowrap"
-               >{{
-                 formatToPrecision(selectedLevelExpectedFullConsumptionValuePerShip[1], precision[1])
-               }}/<img class="h-4 w-4 ml-px" :src="iconURL(mission.shipIconPath, 32)" /></span
-             >,
-             <span class="whitespace-nowrap">
-                 <span class="text-yellow-500">
-                     {{
-                   formatToPrecision(selectedLevelExpectedFullConsumptionValuePerDay[1], precision[1])
-                     }}/d
-                 </span>
-               (1 mission slot)</span
-             >,
-             <span class="whitespace-nowrap">
-                 <span class="text-yellow-500">
-                     {{
-                   formatToPrecision(selectedLevelExpectedFullConsumptionValuePerDay[1] * 3, precision[1])
-                     }}/d
-                 </span>
-               (3 mission slots)</span
-             >.
+          <!-- Piggy fill per ship-->
+          <span class="inline-flex items-center text-yellow-500 whitespace-nowrap">
+            {{ formatToPrecision(selectedLevelExpectedFullConsumptionValuePerShip[1], precision[1]) }}
+            <img class="h-4 w-4 ml-px" :src="iconURL('egginc-extras/icon_piggy_golden_egg.png', 64)" />
+            /<img class="h-4 w-4 ml-px" :src="iconURL(mission.shipIconPath, 32)" /></span>,
+          <span class="whitespace-nowrap">
+            <span class="text-yellow-500">
+              {{
+                formatToPrecision(selectedLevelExpectedFullConsumptionValuePerDay[1], precision[1])
+              }}/d
+            </span>
+            (1 mission slot)</span>,
+          <span class="whitespace-nowrap">
+            <span class="text-yellow-500">
+                {{
+              formatToPrecision(selectedLevelExpectedFullConsumptionValuePerDay[0] * 3, precision[0])
+                }}/d
+            </span>
+            (3 mission slots)</span>.
           <br />
           <a
             href="https://wasmegg-carpet.netlify.app/consumption-sheet/"
@@ -225,7 +211,7 @@
 </template>
 
 <script lang="ts">
-import { ComputedRef, computed, defineComponent, ref, toRefs, watch } from 'vue';
+import { computed, defineComponent, ref, toRefs, watch } from 'vue';
 import { StarIcon } from '@heroicons/vue/solid';
 
 import {
@@ -307,7 +293,7 @@ export default defineComponent({
 
     const configuredLevel = computed(() => config.value.shipLevels[mission.value.shipType]);
     const selectedLevel = ref(configuredLevel.value);
-    const forceLevel = (level: number) => { selectedLevel.value = level};
+    const forceLevel = (level: number) => { selectedLevel.value = level };
     const selectLevel = (event: Event) => {
       selectedLevel.value = parseInt((event.target! as HTMLSelectElement).value);
     };
